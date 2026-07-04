@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WASHERO — Your Laundry Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1b0e46;
+    --ink-2:#2a1466;
+    --violet:#7b2ff7;
+    --violet-2:#9d4edd;
+    --grad:linear-gradient(135deg,#2a1466 0%,#7b2ff7 55%,#9d4edd 100%);
+    --grad-soft:linear-gradient(135deg,rgba(42,20,102,.06),rgba(157,78,221,.10));
+    --paper:#ffffff;
+    --mist:#f6f4fc;
+    --lilac:#ece5ff;
+    --slate:#5a5570;
+    --line:#ece8f5;
+    --shadow:0 24px 60px -24px rgba(42,20,102,.35);
+    --shadow-sm:0 12px 30px -16px rgba(42,20,102,.30);
+    --r:22px;
+    --maxw:1180px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.brand-word{font-family:'Sora',sans-serif;letter-spacing:-.02em}
+  a{text-decoration:none;color:inherit}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .eyebrow{
+    font-size:.78rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--violet);
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:.55rem;
+    font-family:'Sora',sans-serif;font-weight:700;font-size:.98rem;
+    padding:15px 28px;border-radius:999px;border:0;cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{background:var(--grad);color:#fff;box-shadow:0 16px 34px -14px rgba(123,47,247,.7)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 22px 44px -14px rgba(123,47,247,.85)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--violet);color:var(--violet);transform:translateY(-2px)}
+
+  /* ---------- brand mark (recreated from logo) ---------- */
+  .brand{display:inline-flex;align-items:center;gap:0}
+  .brand-word{font-weight:800;font-size:1.5rem;line-height:1;display:flex;align-items:center}
+  .brand-word .a{color:var(--ink)}
+  .brand-word .b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .drum{width:1.05em;height:1.05em;border-radius:50%;display:inline-block;vertical-align:middle}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:60;
+    background:rgba(255,255,255,.82);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .nav-links{display:flex;gap:34px;align-items:center}
+  .nav-links a{font-size:.95rem;font-weight:500;color:var(--slate);transition:color .15s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-cta{display:flex;align-items:center;gap:18px}
+  .nav-phone{font-family:'Sora';font-weight:700;font-size:.95rem;color:var(--ink)}
+  .burger{display:none;background:none;border:0;cursor:pointer;flex-direction:column;gap:5px;padding:6px}
+  .burger span{width:24px;height:2.5px;background:var(--ink);border-radius:2px}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;overflow:hidden;padding:70px 0 210px}
+  .hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+  .cape{
+    position:absolute;top:-140px;right:-160px;width:720px;height:720px;
+    background:var(--grad);filter:blur(10px);opacity:.14;
+    border-radius:47% 53% 62% 38% / 42% 45% 55% 58%;
+    transform:rotate(-8deg);
+  }
+  .blob-2{
+    position:absolute;bottom:60px;left:-120px;width:360px;height:360px;
+    background:radial-gradient(circle,rgba(157,78,221,.16),transparent 70%);
+  }
+  .spark{position:absolute;color:var(--violet);opacity:.55}
+  .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+  .hero h1{font-size:clamp(2.5rem,5.2vw,4.1rem);font-weight:800;line-height:1.03;margin:18px 0 20px}
+  .hero h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{font-size:1.18rem;color:var(--slate);max-width:520px}
+  .hero-actions{display:flex;gap:14px;margin:30px 0 26px;flex-wrap:wrap}
+  .trust{display:flex;gap:22px;flex-wrap:wrap;align-items:center;color:var(--slate);font-size:.92rem;font-weight:500}
+  .trust b{color:var(--ink)}
+  .trust .dot{width:5px;height:5px;border-radius:50%;background:var(--violet-2)}
+
+  /* hero visual */
+  .hero-visual{position:relative;display:flex;justify-content:center;align-items:center;min-height:380px}
+  .badge{
+    width:300px;height:300px;border-radius:50%;
+    background:var(--grad);display:flex;align-items:center;justify-content:center;
+    box-shadow:0 40px 80px -30px rgba(123,47,247,.65);position:relative;
+  }
+  .badge::after{
+    content:"";position:absolute;inset:22px;border-radius:50%;border:2px dashed rgba(255,255,255,.35);
+  }
+  .badge svg{width:150px;height:150px}
+  .float-card{
+    position:absolute;background:#fff;border-radius:16px;padding:14px 18px;
+    box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:12px;font-size:.9rem;font-weight:600;
+  }
+  .float-card small{display:block;font-weight:500;color:var(--slate);font-size:.78rem}
+  .fc-1{top:14px;left:-6px}
+  .fc-2{bottom:26px;right:-18px}
+  .fc-ico{width:38px;height:38px;border-radius:11px;background:var(--lilac);display:flex;align-items:center;justify-content:center;color:var(--violet)}
+
+  /* ---------- booking form (docked below hero) ---------- */
+  .booking-shell{margin-top:-160px;position:relative;z-index:20}
+  .booking{
+    background:#fff;border-radius:28px;box-shadow:var(--shadow);
+    border:1px solid var(--line);overflow:hidden;
+    display:grid;grid-template-columns:.9fr 1.6fr;
+  }
+  .booking-aside{background:var(--grad);color:#fff;padding:42px 36px;position:relative;overflow:hidden}
+  .booking-aside::before{content:"";position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.10)}
+  .booking-aside .eyebrow{color:rgba(255,255,255,.85)}
+  .booking-aside h2{font-size:1.9rem;font-weight:800;margin:10px 0 14px;line-height:1.1}
+  .booking-aside p{color:rgba(255,255,255,.88);font-size:.98rem;position:relative}
+  .aside-list{list-style:none;margin-top:24px;display:grid;gap:12px;position:relative}
+  .aside-list li{display:flex;gap:11px;align-items:center;font-size:.95rem;font-weight:500}
+  .aside-list .tick{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .booking-form{padding:42px 40px}
+  .form-title{font-family:'Sora';font-weight:700;font-size:1.15rem;margin-bottom:6px}
+  .form-sub{color:var(--slate);font-size:.9rem;margin-bottom:24px}
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .field{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+  .field.full{grid-column:1 / -1}
+  .field label{font-size:.82rem;font-weight:600;color:var(--ink)}
+  .field label .req{color:var(--violet)}
+  .field input,.field select,.field textarea{
+    font-family:'Inter';font-size:.95rem;color:var(--ink);
+    padding:13px 15px;border:1.5px solid var(--line);border-radius:12px;background:var(--mist);
+    transition:border .15s, background .15s, box-shadow .15s;width:100%;
+  }
+  .field textarea{resize:vertical;min-height:70px}
+  .field input:focus,.field select:focus,.field textarea:focus{
+    outline:none;border-color:var(--violet);background:#fff;box-shadow:0 0 0 4px rgba(123,47,247,.10);
+  }
+  .form-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:8px;flex-wrap:wrap}
+  .form-note{font-size:.82rem;color:var(--slate);display:flex;align-items:center;gap:7px}
+  .booking-form .btn-primary{width:auto}
+  .success{
+    display:none;text-align:center;padding:34px 20px;
+  }
+  .success.show{display:block}
+  .success .badge-ok{width:72px;height:72px;border-radius:50%;background:var(--lilac);color:var(--violet);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+  .success h3{font-size:1.4rem;margin-bottom:8px}
+  .success p{color:var(--slate);max-width:380px;margin:0 auto}
+
+  /* ---------- sections ---------- */
+  section{padding:96px 0}
+  .sec-head{text-align:center;max-width:640px;margin:0 auto 52px}
+  .sec-head h2{font-size:clamp(1.9rem,3.6vw,2.7rem);font-weight:800;margin:12px 0 12px;line-height:1.1}
+  .sec-head p{color:var(--slate);font-size:1.05rem}
+
+  /* steps */
+  .steps{background:var(--mist)}
+  .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .step{
+    background:#fff;border-radius:var(--r);padding:38px 30px;border:1px solid var(--line);
+    position:relative;transition:transform .2s, box-shadow .2s;
+  }
+  .step:hover{transform:translateY(-6px);box-shadow:var(--shadow-sm)}
+  .step-num{font-family:'Sora';font-weight:800;font-size:1rem;color:var(--violet-2);letter-spacing:.05em}
+  .step-ico{width:60px;height:60px;border-radius:16px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;margin:16px 0 20px}
+  .step h3{font-size:1.3rem;font-weight:700;margin-bottom:8px}
+  .step p{color:var(--slate);font-size:.97rem}
+  .step-line{position:absolute;top:64px;right:-16px;color:var(--lilac);z-index:1}
+  .steps-grid .step:last-child .step-line{display:none}
+
+  /* services */
+  .svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .svc{
+    border:1px solid var(--line);border-radius:var(--r);padding:30px 26px;
+    transition:transform .2s, box-shadow .2s, border-color .2s;background:#fff;
+  }
+  .svc:hover{transform:translateY(-6px);box-shadow:var(--shadow-sm);border-color:transparent}
+  .svc-ico{width:52px;height:52px;border-radius:14px;background:var(--lilac);color:var(--violet);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+  .svc h3{font-size:1.12rem;font-weight:700;margin-bottom:7px}
+  .svc p{color:var(--slate);font-size:.92rem}
+  .svc .price{margin-top:14px;font-family:'Sora';font-weight:700;color:var(--violet);font-size:.95rem}
+
+  /* why */
+  .why{background:var(--ink);color:#fff;border-radius:36px;margin:0 24px;padding:84px 0}
+  .why .wrap{max-width:1100px}
+  .why .sec-head h2{color:#fff}
+  .why .sec-head p{color:rgba(255,255,255,.72)}
+  .why .eyebrow{color:var(--violet-2)}
+  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:38px 34px}
+  .feat{display:flex;gap:16px;align-items:flex-start}
+  .feat-ico{width:46px;height:46px;border-radius:13px;background:rgba(157,78,221,.18);color:var(--violet-2);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .feat h3{font-size:1.08rem;font-weight:700;margin-bottom:5px}
+  .feat p{color:rgba(255,255,255,.68);font-size:.92rem}
+
+  /* local */
+  .local-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .local-copy h2{font-size:clamp(1.9rem,3.4vw,2.6rem);font-weight:800;line-height:1.1;margin:12px 0 16px}
+  .local-copy p{color:var(--slate);font-size:1.05rem;margin-bottom:24px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{background:var(--mist);border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-size:.9rem;font-weight:600;color:var(--ink)}
+  .chip.on{background:var(--grad);color:#fff;border-color:transparent}
+  .map-card{
+    background:var(--grad-soft);border:1px solid var(--line);border-radius:28px;
+    height:360px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  }
+  .map-pin{position:absolute;width:20px;height:20px;border-radius:50% 50% 50% 0;background:var(--violet);transform:rotate(-45deg);box-shadow:0 6px 14px -4px rgba(123,47,247,.7)}
+  .map-pin::after{content:"";position:absolute;inset:5px;background:#fff;border-radius:50%}
+  .map-center{width:118px;height:118px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 24px 50px -18px rgba(123,47,247,.6);z-index:2;position:relative}
+  .ring{position:absolute;border:1.5px dashed rgba(123,47,247,.3);border-radius:50%}
+
+  /* testimonials */
+  .quotes{background:var(--mist)}
+  .q-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .q{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:30px 28px}
+  .stars{color:#f5a623;font-size:1rem;letter-spacing:2px;margin-bottom:14px}
+  .q p{font-size:1rem;color:var(--ink);margin-bottom:20px}
+  .q-person{display:flex;align-items:center;gap:12px}
+  .q-av{width:44px;height:44px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Sora';font-weight:700;font-size:.95rem}
+  .q-person b{display:block;font-size:.95rem}
+  .q-person small{color:var(--slate);font-size:.82rem}
+
+  /* final cta */
+  .cta{
+    background:var(--grad);border-radius:36px;margin:0 24px 96px;padding:72px 40px;text-align:center;color:#fff;position:relative;overflow:hidden;
+  }
+  .cta::before{content:"";position:absolute;top:-80px;left:-40px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.10)}
+  .cta::after{content:"";position:absolute;bottom:-90px;right:-30px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.08)}
+  .cta h2{font-size:clamp(2rem,4vw,3rem);font-weight:800;margin-bottom:14px;position:relative}
+  .cta p{color:rgba(255,255,255,.9);font-size:1.1rem;margin-bottom:28px;position:relative}
+  .cta .btn{background:#fff;color:var(--ink);position:relative}
+  .cta .btn:hover{transform:translateY(-2px)}
+
+  /* footer */
+  footer{background:var(--ink);color:rgba(255,255,255,.7);padding:64px 0 30px}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:36px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.12)}
+  .foot-grid .brand-word .a{color:#fff}
+  footer p{font-size:.92rem;margin-top:16px;max-width:280px}
+  .foot-col h4{color:#fff;font-family:'Sora';font-size:.95rem;margin-bottom:16px;font-weight:600}
+  .foot-col a{display:block;font-size:.92rem;margin-bottom:10px;color:rgba(255,255,255,.7);transition:color .15s}
+  .foot-col a:hover{color:#fff}
+  .foot-bot{display:flex;justify-content:space-between;align-items:center;padding-top:24px;font-size:.85rem;flex-wrap:wrap;gap:10px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* responsive */
+  @media(max-width:960px){
+    .nav-links{display:none}
+    .burger{display:flex}
+    .nav-phone{display:none}
+    .hero{padding:48px 0 200px}
+    .hero-grid{grid-template-columns:1fr;gap:20px}
+    .hero-visual{min-height:280px;order:-1}
+    .badge{width:220px;height:220px}.badge svg{width:110px;height:110px}
+    .booking{grid-template-columns:1fr}
+    .booking-aside{padding:34px 28px}
+    .steps-grid,.svc-grid,.why-grid,.q-grid{grid-template-columns:1fr}
+    .svc-grid{grid-template-columns:1fr 1fr}
+    .step-line{display:none}
+    .local-grid,.foot-grid{grid-template-columns:1fr}
+    .why{margin:0 16px;border-radius:28px}
+    .cta{margin:0 16px 64px}
+  }
+  @media(max-width:560px){
+    .fgrid{grid-template-columns:1fr}
+    .svc-grid{grid-template-columns:1fr}
+    .booking-form{padding:32px 24px}
+    .hero-actions{flex-direction:column;align-items:stretch}
+    .hero-actions .btn{justify-content:center}
+    .fc-1,.fc-2{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="wrap nav">
+    <a href="#" class="brand" aria-label="WASHERO home">
+      <span class="brand-word">
+        <span class="a">WASH</span><span class="b">ER</span>
+        <svg class="drum" viewBox="0 0 40 40" fill="none" style="margin-left:1px">
+          <circle cx="20" cy="20" r="19" fill="url(#dg)"/>
+          <path d="M8 22c4 3 8 3 12 0s8-3 12 0v6c0 .5-.4 1-1 1H9c-.6 0-1-.5-1-1z" fill="#fff" opacity=".92"/>
+          <circle cx="26" cy="14" r="2.4" fill="#fff"/>
+          <defs><linearGradient id="dg" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#2a1466"/><stop offset="1" stop-color="#9d4edd"/></linearGradient></defs>
+        </svg>
+      </span>
+    </a>
+    <nav class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#services">Services</a>
+      <a href="#why">Why WASHERO</a>
+      <a href="#areas">Service area</a>
+    </nav>
+    <div class="nav-cta">
+      <span class="nav-phone">(000) 000-0000</span>
+      <a href="#book" class="btn btn-primary">Schedule a pickup</a>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="cape"></div>
+    <div class="blob-2"></div>
+    <svg class="spark" style="top:120px;left:8%" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+    <svg class="spark" style="top:70px;right:12%" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+    <svg class="spark" style="bottom:260px;left:16%" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+  </div>
+
+  <div class="wrap hero-grid">
+    <div class="hero-copy reveal">
+      <span class="eyebrow">Your laundry hero</span>
+      <h1>Get clean laundry in <span class="hl">3 easy steps.</span></h1>
+      <p class="lead">Schedule a pickup, we grab your basket from your door, and deliver it washed, folded, and fresh — all within 24 hours.</p>
+      <div class="hero-actions">
+        <a href="#book" class="btn btn-primary">Schedule a pickup
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#how" class="btn btn-ghost">See how it works</a>
+      </div>
+      <div class="trust">
+        <span>★ <b>4.9</b> from local families</span>
+        <span class="dot"></span>
+        <span><b>24-hour</b> turnaround</span>
+        <span class="dot"></span>
+        <span><b>Free</b> pickup &amp; delivery</span>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal">
+      <div class="badge">
+        <svg viewBox="0 0 120 120" fill="none">
+          <circle cx="60" cy="60" r="54" stroke="#fff" stroke-width="3" opacity=".5"/>
+          <path d="M24 66c12 9 24 9 36 0s24-9 36 0v18c0 2-1.5 4-4 4H28c-2.5 0-4-2-4-4z" fill="#fff"/>
+          <circle cx="78" cy="42" r="7" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="float-card fc-1">
+        <span class="fc-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <span>Pickup booked<small>Tomorrow, 9–11 AM</small></span>
+      </div>
+      <div class="float-card fc-2">
+        <span class="fc-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span>
+        <span>Out for delivery<small>Fresh &amp; folded</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BOOKING FORM ===== -->
+<div class="wrap booking-shell" id="book">
+  <div class="booking reveal">
+    <div class="booking-aside">
+      <span class="eyebrow">Book in under a minute</span>
+      <h2>Schedule your pickup</h2>
+      <p>Tell us where and when. Our hero handles the rest — no bags, no prep, no hassle.</p>
+      <ul class="aside-list">
+        <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span> Free doorstep pickup</li>
+        <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span> Back within 24 hours</li>
+        <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span> Pay after delivery</li>
+      </ul>
+    </div>
+
+    <div class="booking-form">
+      <form id="bookForm" novalidate>
+        <div class="form-title">Your pickup details</div>
+        <div class="form-sub">We'll text you to confirm your time slot.</div>
+        <div class="fgrid">
+          <div class="field">
+            <label>Full name <span class="req">*</span></label>
+            <input type="text" name="name" placeholder="Juan Dela Cruz" required>
+          </div>
+          <div class="field">
+            <label>Phone number <span class="req">*</span></label>
+            <input type="tel" name="phone" placeholder="+63 900 000 0000" required>
+          </div>
+        </div>
+        <div class="field full">
+          <label>Pickup address <span class="req">*</span></label>
+          <input type="text" name="address" placeholder="House no., street, barangay / area" required>
+        </div>
+        <div class="fgrid">
+          <div class="field">
+            <label>Service <span class="req">*</span></label>
+            <select name="service" required>
+              <option value="">Choose a service…</option>
+              <option>Wash &amp; Fold</option>
+              <option>Dry Cleaning</option>
+              <option>Ironing &amp; Press</option>
+              <option>Bedding &amp; Comforters</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Pickup date <span class="req">*</span></label>
+            <input type="date" name="date" id="dateInput" required>
+          </div>
+        </div>
+        <div class="fgrid">
+          <div class="field">
+            <label>Preferred time <span class="req">*</span></label>
+            <select name="time" required>
+              <option value="">Choose a slot…</option>
+              <option>9:00 – 11:00 AM</option>
+              <option>11:00 AM – 1:00 PM</option>
+              <option>1:00 – 3:00 PM</option>
+              <option>3:00 – 5:00 PM</option>
+              <option>5:00 – 7:00 PM</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Approx. load</label>
+            <select name="load">
+              <option value="">Optional</option>
+              <option>Small (1 basket)</option>
+              <option>Medium (2–3 baskets)</option>
+              <option>Large (4+ baskets)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field full">
+          <label>Notes for your hero</label>
+          <textarea name="notes" placeholder="Gate code, delicate items, detergent preference…"></textarea>
+        </div>
+        <div class="form-foot">
+          <span class="form-note">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            No payment now — pay after delivery.
+          </span>
+          <button type="submit" class="btn btn-primary">Schedule my pickup</button>
+        </div>
+      </form>
+
+      <div class="success" id="successMsg">
+        <div class="badge-ok">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <h3>Your hero is on the way! 🦸</h3>
+        <p>Thanks — we've got your pickup request. We'll text you shortly to confirm your time slot. Sit back, laundry day is handled.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="steps" id="how">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>Laundry, without the laundry</h2>
+      <p>Three simple steps stand between you and a fresh, folded basket at your door.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step reveal">
+        <div class="step-num">STEP 01</div>
+        <div class="step-ico">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+        <h3>Schedule</h3>
+        <p>Book a pickup online in under a minute. Pick the day and time that fits your life.</p>
+        <svg class="step-line" width="34" height="16" viewBox="0 0 34 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 8h30M24 2l6 6-6 6"/></svg>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">STEP 02</div>
+        <div class="step-ico">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <h3>Pickup</h3>
+        <p>Our hero arrives at your door — no bagging or prep needed. Free of charge, every time.</p>
+        <svg class="step-line" width="34" height="16" viewBox="0 0 34 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 8h30M24 2l6 6-6 6"/></svg>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">STEP 03</div>
+        <div class="step-ico">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/><path d="M3 12v7a2 2 0 002 2h14a2 2 0 002-2v-7"/></svg>
+        </div>
+        <h3>Deliver</h3>
+        <p>Get it back clean, folded, and neatly packed — right where we picked it up, within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Our services</span>
+      <h2>One team for every basket</h2>
+      <p>From everyday loads to the pieces you'd never risk in a machine.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc reveal">
+        <div class="svc-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="7"/><path d="M9 13a3 3 0 013-3"/><path d="M5 4h14"/></svg></div>
+        <h3>Wash &amp; Fold</h3>
+        <p>Everyday laundry washed, dried, and folded the way you like it.</p>
+        <div class="price">from ₱—/kg</div>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2 4h-4z"/><path d="M12 7v3M7 21h10l-1-11H8z"/></svg></div>
+        <h3>Dry Cleaning</h3>
+        <p>Gentle care for suits, dresses, and delicate fabrics.</p>
+        <div class="price">from ₱—/pc</div>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 2 8-8"/><path d="M3 21h18"/></svg></div>
+        <h3>Ironing &amp; Press</h3>
+        <p>Crisp, wrinkle-free shirts and uniforms, pressed to perfection.</p>
+        <div class="price">from ₱—/pc</div>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l9-5 9 5v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M3 12h18"/></svg></div>
+        <h3>Bedding &amp; Comforters</h3>
+        <p>Bulky sheets, blankets, and comforters, fresh and fluffy again.</p>
+        <div class="price">from ₱—/pc</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY ===== -->
+<section id="why" style="padding:0">
+  <div class="why">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Why WASHERO</span>
+        <h2>Powers your laundry deserves</h2>
+        <p>Reliable, local, and genuinely convenient — the way laundry day should be.</p>
+      </div>
+      <div class="why-grid">
+        <div class="feat reveal">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div><h3>24-hour turnaround</h3><p>Drop it off in the evening, get it back the next day. Rush service available too.</p></div>
+        </div>
+        <div class="feat reveal">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+          <div><h3>Free pickup &amp; delivery</h3><p>No delivery fees, no minimums. We come to your door on your schedule.</p></div>
+        </div>
+        <div class="feat reveal">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7z"/><path d="M9 9c1 1.5 5 1.5 6 0"/></svg></div>
+          <div><h3>Gentle, eco detergents</h3><p>Skin-friendly, low-waste washing that's kind to your clothes and the planet.</p></div>
+        </div>
+        <div class="feat reveal">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+          <div><h3>Live order updates</h3><p>Get a text at every step — picked up, washing, out for delivery.</p></div>
+        </div>
+        <div class="feat reveal">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 3h4v4l3 3-3 3v4h-4l-3 3-3-3H5v-4l-3-3 3-3V5h4z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div><h3>Local team you trust</h3><p>Same friendly, background-checked drivers serving your neighborhood.</p></div>
+        </div>
+        <div class="feat reveal">
+          <div class="feat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div><h3>Happiness guaranteed</h3><p>Not perfectly fresh? We'll re-wash it free. Simple as that.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LOCAL / SERVICE AREA ===== -->
+<section id="areas">
+  <div class="wrap local-grid">
+    <div class="local-copy reveal">
+      <span class="eyebrow">Proudly local</span>
+      <h2>Your neighborhood's laundry hero</h2>
+      <p>We're not a faceless chain. We're your neighbors — picking up, washing, and delivering right here in the community, one basket at a time.</p>
+      <div class="chips">
+        <span class="chip on">Your city</span>
+        <span class="chip">Downtown</span>
+        <span class="chip">Barangay Poblacion</span>
+        <span class="chip">Riverside</span>
+        <span class="chip">Hillcrest</span>
+        <span class="chip">+ nearby areas</span>
+      </div>
+    </div>
+    <div class="map-card reveal">
+      <div class="ring" style="width:140px;height:140px"></div>
+      <div class="ring" style="width:230px;height:230px"></div>
+      <div class="ring" style="width:320px;height:320px"></div>
+      <div class="map-center">
+        <svg width="46" height="46" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="18" stroke="#fff" stroke-width="2" opacity=".6"/>
+          <path d="M8 22c4 3 8 3 12 0s8-3 12 0v6c0 .6-.4 1-1 1H9c-.6 0-1-.4-1-1z" fill="#fff"/>
+          <circle cx="26" cy="14" r="2.6" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="map-pin" style="top:24%;left:30%"></div>
+      <div class="map-pin" style="top:34%;right:24%"></div>
+      <div class="map-pin" style="bottom:26%;left:26%"></div>
+      <div class="map-pin" style="bottom:22%;right:30%"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="quotes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Loved locally</span>
+      <h2>Neighbors who never fold laundry anymore</h2>
+    </div>
+    <div class="q-grid">
+      <div class="q reveal">
+        <div class="stars">★★★★★</div>
+        <p>"Booked at night, had everything back by lunch the next day — folded better than I ever do it. WASHERO really is a lifesaver."</p>
+        <div class="q-person"><span class="q-av">MR</span><div><b>Maria R.</b><small>Downtown</small></div></div>
+      </div>
+      <div class="q reveal">
+        <div class="stars">★★★★★</div>
+        <p>"Same driver every week, always on time, and my kids' uniforms come back spotless. Feels like having a helper on call."</p>
+        <div class="q-person"><span class="q-av">JC</span><div><b>Jomar C.</b><small>Riverside</small></div></div>
+      </div>
+      <div class="q reveal">
+        <div class="stars">★★★★★</div>
+        <p>"Free pickup and delivery genuinely won me over. I haven't touched a washing machine in two months. Highly recommend."</p>
+        <div class="q-person"><span class="q-av">AL</span><div><b>Anna L.</b><small>Hillcrest</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<div class="cta reveal">
+  <h2>Laundry day, handled.</h2>
+  <p>Schedule your first pickup in under a minute — pay only after it's delivered.</p>
+  <a href="#book" class="btn">Schedule a pickup</a>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <span class="brand-word" style="font-size:1.5rem">
+          <span class="a">WASH</span><span class="b">ER</span>
+          <svg class="drum" viewBox="0 0 40 40" fill="none" style="margin-left:1px"><circle cx="20" cy="20" r="19" fill="url(#dg2)"/><path d="M8 22c4 3 8 3 12 0s8-3 12 0v6c0 .5-.4 1-1 1H9c-.6 0-1-.5-1-1z" fill="#fff" opacity=".92"/><circle cx="26" cy="14" r="2.4" fill="#fff"/><defs><linearGradient id="dg2" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#2a1466"/><stop offset="1" stop-color="#9d4edd"/></linearGradient></defs></svg>
+        </span>
+        <p>Your laundry hero — free doorstep pickup and delivery, washed and folded within 24 hours.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#how">How it works</a>
+        <a href="#services">Services</a>
+        <a href="#why">Why WASHERO</a>
+        <a href="#areas">Service area</a>
+      </div>
+      <div class="foot-col">
+        <h4>Get in touch</h4>
+        <a href="tel:0000000000">(000) 000-0000</a>
+        <a href="mailto:hello@washero.com">hello@washero.com</a>
+        <a href="#book">Schedule a pickup</a>
+      </div>
+      <div class="foot-col">
+        <h4>Hours</h4>
+        <a href="#">Mon–Sat · 7 AM – 8 PM</a>
+        <a href="#">Sun · 8 AM – 5 PM</a>
+        <a href="#areas">Serving your city &amp; nearby areas</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 WASHERO. All rights reserved.</span>
+      <span>Privacy · Terms</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // set date min to today
+  var di = document.getElementById('dateInput');
+  if(di){ di.min = new Date().toISOString().split('T')[0]; }
+
+  // form submit -> success state (in-memory only)
+  var form = document.getElementById('bookForm');
+  var success = document.getElementById('successMsg');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var required = form.querySelectorAll('[required]');
+    var ok = true;
+    required.forEach(function(f){
+      if(!f.value.trim()){ f.style.borderColor = '#e0567a'; ok = false; }
+      else { f.style.borderColor = ''; }
+    });
+    if(!ok){ return; }
+    form.style.display = 'none';
+    success.classList.add('show');
+    success.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  // scroll reveal
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+</script>
+</body>
+</html>
