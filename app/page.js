@@ -1,5 +1,6 @@
 import BookingForm from "./components/BookingForm";
 import RevealObserver from "./components/RevealObserver";
+import PurchaseProof from "./components/PurchaseProof";
 
 const PARTNER_LOGOS = ["Hotel Aurora", "Metro Fitness", "Bayview Residences", "Cafe Luna"];
 
@@ -92,6 +93,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }}
       />
       <RevealObserver />
+      <PurchaseProof />
 
       {/* ===== HEADER ===== */}
       <header>
