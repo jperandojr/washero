@@ -366,11 +366,14 @@ footer p{font-size:.92rem;margin-top:16px;max-width:280px}
   .burger{display:flex}
   .nav-phone{display:none}
   .nav .logo{height:20px}
-  .hero{padding:70px 0 230px}
-  .hero-bg{background-position:center center}
+  .hero{padding:28px 0 230px}
+  .hero-bg{background-image:none}
   .hero-bg::after{display:block}
   .hero-grid{grid-template-columns:1fr;gap:20px}
-  .hero-visual{min-height:280px;order:-1}
+  .hero-visual{
+    min-height:240px;order:-1;border-radius:24px;overflow:hidden;
+    background-image:url('/hero-bg.jpg');background-size:cover;background-position:76% 22%;
+  }
   .booking{grid-template-columns:1fr}
   .booking-aside{padding:34px 28px}
   .steps-grid,.svc-grid,.why-grid,.q-grid{grid-template-columns:1fr}
