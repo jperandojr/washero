@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { createOrder } from "@/app/actions/orders";
 
-export default function BookingForm() {
+export default function BookingForm({
+  whatsappNumber = "639000000000",
+  messengerUsername = "washero",
+}) {
   const formRef = useRef(null);
   const successRef = useRef(null);
   const dateRef = useRef(null);
@@ -147,8 +150,8 @@ export default function BookingForm() {
             className="chat-cta"
             href={
               chat === "whatsapp"
-                ? "https://wa.me/639000000000?text=Hi%20WASHERO!%20I%27d%20like%20to%20schedule%20a%20laundry%20pickup."
-                : "https://m.me/washero"
+                ? `https://wa.me/${whatsappNumber}?text=Hi%20WASHERO!%20I%27d%20like%20to%20schedule%20a%20laundry%20pickup.`
+                : `https://m.me/${messengerUsername}`
             }
             target="_blank"
             rel="noopener noreferrer"

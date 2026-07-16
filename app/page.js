@@ -1,6 +1,7 @@
 import BookingForm from "./components/BookingForm";
 import RevealObserver from "./components/RevealObserver";
 import PurchaseProof from "./components/PurchaseProof";
+import { getSiteSettings } from "@/lib/settings";
 
 const PARTNER_LOGOS = ["Hotel Aurora", "Metro Fitness", "Bayview Residences", "Cafe Luna"];
 
@@ -41,52 +42,57 @@ const FAQ_SCHEMA = {
   })),
 };
 
-const LOCAL_BUSINESS_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "DryCleaningOrLaundry",
-  name: "WASHERO",
-  description:
-    "Laundry pickup and delivery service in Iloilo City — wash & fold, ironing, and dry cleaning, back within 24 hours.",
-  email: "hello@washero.com",
-  priceRange: "₱",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Iloilo City",
-    addressRegion: "Iloilo",
-    addressCountry: "PH",
-  },
-  geo: { "@type": "GeoCoordinates", latitude: 10.7202, longitude: 122.5621 },
-  areaServed: [
-    "City Proper",
-    "Jaro",
-    "La Paz",
-    "Lapuz",
-    "Mandurriao",
-    "Molo",
-    "Villa Arevalo",
-  ].map((name) => ({ "@type": "Place", name: `${name}, Iloilo City` })),
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      opens: "07:00",
-      closes: "20:00",
+function getLocalBusinessSchema(settings) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "DryCleaningOrLaundry",
+    name: "WASHERO",
+    description:
+      "Laundry pickup and delivery service in Iloilo City — wash & fold, ironing, and dry cleaning, back within 24 hours.",
+    email: settings.email,
+    telephone: settings.phone_href,
+    priceRange: "₱",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Iloilo City",
+      addressRegion: "Iloilo",
+      addressCountry: "PH",
     },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Sunday",
-      opens: "08:00",
-      closes: "17:00",
-    },
-  ],
-};
+    geo: { "@type": "GeoCoordinates", latitude: 10.7202, longitude: 122.5621 },
+    areaServed: [
+      "City Proper",
+      "Jaro",
+      "La Paz",
+      "Lapuz",
+      "Mandurriao",
+      "Molo",
+      "Villa Arevalo",
+    ].map((name) => ({ "@type": "Place", name: `${name}, Iloilo City` })),
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        opens: "07:00",
+        closes: "20:00",
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: "Sunday",
+        opens: "08:00",
+        closes: "17:00",
+      },
+    ],
+  };
+}
 
-export default function Home() {
+export default async function Home() {
+  const settings = await getSiteSettings();
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(LOCAL_BUSINESS_SCHEMA) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getLocalBusinessSchema(settings)) }}
       />
       <script
         type="application/ld+json"
@@ -108,7 +114,9 @@ export default function Home() {
             <a href="#areas">Service area</a>
           </nav>
           <div className="nav-cta">
-            <span className="nav-phone">(000) 000-0000</span>
+            <a href={`tel:${settings.phone_href}`} className="nav-phone">
+              {settings.phone_display}
+            </a>
             <a href="#book" className="btn btn-primary">
               Schedule a pickup
             </a>
@@ -171,7 +179,10 @@ export default function Home() {
 
       {/* ===== BOOKING FORM ===== */}
       <div className="wrap booking-shell" id="book">
-        <BookingForm />
+        <BookingForm
+          whatsappNumber={settings.whatsapp_number}
+          messengerUsername={settings.messenger_username}
+        />
       </div>
 
       {/* ===== PARTNERS (hidden for now) =====
@@ -522,14 +533,14 @@ export default function Home() {
             </div>
             <div className="foot-col">
               <h4>Get in touch</h4>
-              <a href="tel:0000000000">(000) 000-0000</a>
-              <a href="mailto:hello@washero.com">hello@washero.com</a>
+              <a href={`tel:${settings.phone_href}`}>{settings.phone_display}</a>
+              <a href={`mailto:${settings.email}`}>{settings.email}</a>
               <a href="#book">Schedule a pickup</a>
             </div>
             <div className="foot-col">
               <h4>Hours</h4>
-              <a href="#">Mon–Sat · 7 AM – 8 PM</a>
-              <a href="#">Sun · 8 AM – 5 PM</a>
+              <a href="#">{settings.hours_weekday}</a>
+              <a href="#">{settings.hours_sunday}</a>
               <a href="#areas">Serving Iloilo City &amp; nearby areas</a>
             </div>
           </div>

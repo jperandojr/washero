@@ -40,6 +40,23 @@ create table if not exists orders (
   created_at timestamptz not null default now()
 );
 
+-- ---------- site settings (single row) ----------
+-- id is a boolean that can only ever be `true`, so the primary key
+-- constraint enforces exactly one row for the whole table.
+create table if not exists site_settings (
+  id boolean primary key default true check (id),
+  phone_display text not null default '(000) 000-0000',
+  phone_href text not null default '+639000000000',
+  email text not null default 'hello@washero.com',
+  hours_weekday text not null default 'Mon–Sat · 7 AM – 8 PM',
+  hours_sunday text not null default 'Sun · 8 AM – 5 PM',
+  whatsapp_number text not null default '639000000000',
+  messenger_username text not null default 'washero',
+  updated_at timestamptz not null default now()
+);
+
+insert into site_settings (id) values (true) on conflict (id) do nothing;
+
 -- Lock every table down by default. The dashboard and the public booking
 -- form both talk to Supabase through server-side code using the
 -- service_role key, which bypasses RLS entirely -- so no public policies
@@ -47,3 +64,4 @@ create table if not exists orders (
 alter table pages enable row level security;
 alter table blog_posts enable row level security;
 alter table orders enable row level security;
+alter table site_settings enable row level security;
