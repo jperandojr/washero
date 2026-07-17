@@ -30,6 +30,13 @@
 }
 .dash-nav a:hover{background:rgba(255,255,255,.06);color:#fff}
 .dash-nav a.active{background:var(--grad);color:#fff;font-weight:600}
+.dash-user{
+  padding:10px;margin-bottom:8px;border-top:1px solid rgba(255,255,255,.1);padding-top:14px;
+}
+.dash-user-name{font-size:.82rem;font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dash-user-role{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:2px}
+.badge-pill.role-admin{background:var(--lilac);color:var(--violet)}
+.badge-pill.role-partner{background:var(--mist);color:var(--slate);border:1px solid var(--line)}
 .dash-logout button{
   width:100%;background:transparent;border:1.5px solid rgba(255,255,255,.18);color:rgba(255,255,255,.75);
   padding:8px 10px;border-radius:8px;font-family:var(--font-sora);font-weight:600;font-size:.82rem;cursor:pointer;

@@ -1,5 +1,7 @@
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { ADMIN_COOKIE, readSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +43,9 @@ async function getDashboardData() {
 }
 
 export default async function DashboardHome() {
+  const cookieStore = await cookies();
+  const session = await readSession(cookieStore.get(ADMIN_COOKIE)?.value);
+  const isAdmin = session?.role === "admin";
   const { counts, recentOrders } = await getDashboardData();
 
   return (
@@ -110,15 +115,17 @@ export default async function DashboardHome() {
         </table>
       </div>
 
-      <div className="dash-secondary">
-        <span className="dash-secondary-label">Content</span>
-        <Link href="/admin/pages" className="mini-stat">
-          <b>{counts.pages}</b> Pages
-        </Link>
-        <Link href="/admin/blog" className="mini-stat">
-          <b>{counts.posts}</b> Blog posts
-        </Link>
-      </div>
+      {isAdmin && (
+        <div className="dash-secondary">
+          <span className="dash-secondary-label">Content</span>
+          <Link href="/admin/pages" className="mini-stat">
+            <b>{counts.pages}</b> Pages
+          </Link>
+          <Link href="/admin/blog" className="mini-stat">
+            <b>{counts.posts}</b> Blog posts
+          </Link>
+        </div>
+      )}
     </>
   );
 }

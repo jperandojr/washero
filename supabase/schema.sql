@@ -40,6 +40,16 @@ create table if not exists orders (
   created_at timestamptz not null default now()
 );
 
+-- ---------- admin users ----------
+create table if not exists admin_users (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null unique,
+  password_hash text not null,
+  role text not null default 'partner' check (role in ('admin', 'partner')),
+  created_at timestamptz not null default now()
+);
+
 -- ---------- site settings (single row) ----------
 -- id is a boolean that can only ever be `true`, so the primary key
 -- constraint enforces exactly one row for the whole table.
@@ -65,3 +75,4 @@ alter table pages enable row level security;
 alter table blog_posts enable row level security;
 alter table orders enable row level security;
 alter table site_settings enable row level security;
+alter table admin_users enable row level security;
