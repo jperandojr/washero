@@ -7,7 +7,13 @@ export const config = {
 
 // Partners only get Dashboard + Orders. Everything else under /admin is
 // admin-only.
-const ADMIN_ONLY_PREFIXES = ["/admin/settings", "/admin/pages", "/admin/blog", "/admin/users"];
+const ADMIN_ONLY_PREFIXES = [
+  "/admin/settings",
+  "/admin/pages",
+  "/admin/blog",
+  "/admin/users",
+  "/admin/marketing",
+];
 
 export async function proxy(request) {
   const { pathname } = request.nextUrl;

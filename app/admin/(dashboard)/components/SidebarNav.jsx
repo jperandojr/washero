@@ -23,6 +23,7 @@ const ALL_GROUPS = [
     label: "Admin",
     adminOnly: true,
     links: [
+      { href: "/admin/marketing", label: "Marketing" },
       { href: "/admin/settings", label: "Settings" },
       { href: "/admin/users", label: "Users" },
     ],

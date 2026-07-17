@@ -50,6 +50,18 @@ create table if not exists admin_users (
   created_at timestamptz not null default now()
 );
 
+-- ---------- marketing assets (metadata; files live in Supabase Storage) ----------
+create table if not exists marketing_assets (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  category text,
+  file_path text not null,
+  file_url text not null,
+  file_type text not null,
+  file_size bigint,
+  created_at timestamptz not null default now()
+);
+
 -- ---------- site settings (single row) ----------
 -- id is a boolean that can only ever be `true`, so the primary key
 -- constraint enforces exactly one row for the whole table.
@@ -76,3 +88,4 @@ alter table blog_posts enable row level security;
 alter table orders enable row level security;
 alter table site_settings enable row level security;
 alter table admin_users enable row level security;
+alter table marketing_assets enable row level security;
