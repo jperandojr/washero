@@ -226,17 +226,6 @@ export default function BookingForm({
                 </select>
               </div>
             </div>
-            <div className="fgrid">
-              <div className="field">
-                <label>Approx. load</label>
-                <select name="load" defaultValue="">
-                  <option value="">Optional</option>
-                  <option>Small (1 basket)</option>
-                  <option>Medium (2–3 baskets)</option>
-                  <option>Large (4+ baskets)</option>
-                </select>
-              </div>
-            </div>
             <div className="field full">
               <label>Notes for your hero</label>
               <textarea name="notes" placeholder="Gate code, delicate items, detergent preference…" />
