@@ -29,12 +29,11 @@ export default async function OrdersList() {
             <col style={{ width: "12%" }} />
             <col style={{ width: "10%" }} />
             <col style={{ width: "12%" }} />
-            <col style={{ width: "14%" }} />
-            <col style={{ width: "8%" }} />
-            <col style={{ width: "12%" }} />
-            <col style={{ width: "7%" }} />
-            <col style={{ width: "12%" }} />
+            <col style={{ width: "16%" }} />
+            <col style={{ width: "9%" }} />
             <col style={{ width: "13%" }} />
+            <col style={{ width: "14%" }} />
+            <col style={{ width: "14%" }} />
           </colgroup>
           <thead>
             <tr>
@@ -44,7 +43,6 @@ export default async function OrdersList() {
               <th>Address</th>
               <th>Service</th>
               <th>Pickup</th>
-              <th>Load</th>
               <th>Notes</th>
               <th>Status</th>
             </tr>
@@ -52,7 +50,7 @@ export default async function OrdersList() {
           <tbody>
             {(!orders || orders.length === 0) && (
               <tr className="empty-row">
-                <td colSpan={9}>No orders yet.</td>
+                <td colSpan={8}>No orders yet.</td>
               </tr>
             )}
             {orders?.map((o) => (
@@ -65,7 +63,6 @@ export default async function OrdersList() {
                 <td title={`${o.pickup_date} · ${o.pickup_time}`}>
                   {formatPickupDate(o.pickup_date)} · {o.pickup_time}
                 </td>
-                <td title={o.load_size || ""}>{o.load_size || "—"}</td>
                 <td title={o.notes || ""}>{o.notes || "—"}</td>
                 <td>
                   <StatusSelect id={o.id} status={o.status} />

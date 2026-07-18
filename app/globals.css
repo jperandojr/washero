@@ -194,6 +194,7 @@ header{
   transition:border .15s, background .15s, box-shadow .15s;width:100%;
 }
 .field input::placeholder,.field textarea::placeholder{font-size:.85rem;color:var(--slate)}
+.field select[name="service"],.field select[name="time"]{font-size:.85rem}
 .field textarea{resize:vertical;min-height:70px}
 .field input:focus,.field select:focus,.field textarea:focus{
   outline:none;border-color:var(--violet);background:#fff;box-shadow:0 0 0 4px rgba(123,47,247,.10);
