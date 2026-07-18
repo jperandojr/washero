@@ -26,19 +26,21 @@ export default async function OrdersList() {
       <div className="dash-card">
         <table className="dash-table dash-table-fixed">
           <colgroup>
-            <col style={{ width: "13%" }} />
-            <col style={{ width: "11%" }} />
-            <col style={{ width: "17%" }} />
-            <col style={{ width: "9%" }} />
-            <col style={{ width: "13%" }} />
-            <col style={{ width: "8%" }} />
+            <col style={{ width: "12%" }} />
+            <col style={{ width: "10%" }} />
+            <col style={{ width: "12%" }} />
             <col style={{ width: "14%" }} />
-            <col style={{ width: "15%" }} />
+            <col style={{ width: "8%" }} />
+            <col style={{ width: "12%" }} />
+            <col style={{ width: "7%" }} />
+            <col style={{ width: "12%" }} />
+            <col style={{ width: "13%" }} />
           </colgroup>
           <thead>
             <tr>
               <th>Name</th>
               <th>Phone</th>
+              <th>Email</th>
               <th>Address</th>
               <th>Service</th>
               <th>Pickup</th>
@@ -50,13 +52,14 @@ export default async function OrdersList() {
           <tbody>
             {(!orders || orders.length === 0) && (
               <tr className="empty-row">
-                <td colSpan={8}>No orders yet.</td>
+                <td colSpan={9}>No orders yet.</td>
               </tr>
             )}
             {orders?.map((o) => (
               <tr key={o.id}>
                 <td title={o.name}>{o.name}</td>
                 <td title={o.phone}>{o.phone}</td>
+                <td title={o.email || ""}>{o.email || "—"}</td>
                 <td title={o.address}>{o.address}</td>
                 <td title={o.service}>{o.service}</td>
                 <td title={`${o.pickup_date} · ${o.pickup_time}`}>

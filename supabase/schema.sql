@@ -30,6 +30,7 @@ create table if not exists orders (
   id uuid primary key default gen_random_uuid(),
   name text not null,
   phone text not null,
+  email text,
   address text not null,
   service text not null,
   pickup_date date not null,
@@ -39,6 +40,10 @@ create table if not exists orders (
   status text not null default 'new' check (status in ('new', 'in_progress', 'completed', 'cancelled')),
   created_at timestamptz not null default now()
 );
+
+-- Adds the email column for installs that already had the orders table
+-- before it existed.
+alter table orders add column if not exists email text;
 
 -- ---------- admin users ----------
 create table if not exists admin_users (

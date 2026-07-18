@@ -180,13 +180,11 @@ export default function BookingForm({
                 <input type="tel" name="phone" placeholder="+63 900 000 0000" required />
               </div>
             </div>
-            <div className="field full">
-              <label>
-                Pickup address <span className="req">*</span>
-              </label>
-              <input type="text" name="address" placeholder="House no., street, barangay / area" required />
-            </div>
             <div className="fgrid">
+              <div className="field">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="juan@email.com" />
+              </div>
               <div className="field">
                 <label>
                   Service <span className="req">*</span>
@@ -200,14 +198,20 @@ export default function BookingForm({
                   <option>Not sure yet</option>
                 </select>
               </div>
+            </div>
+            <div className="field full">
+              <label>
+                Pickup address <span className="req">*</span>
+              </label>
+              <input type="text" name="address" placeholder="House no., street, barangay / area" required />
+            </div>
+            <div className="fgrid">
               <div className="field">
                 <label>
                   Pickup date <span className="req">*</span>
                 </label>
                 <input ref={dateRef} type="date" name="date" id="dateInput" required />
               </div>
-            </div>
-            <div className="fgrid">
               <div className="field">
                 <label>
                   Preferred time <span className="req">*</span>
@@ -221,6 +225,8 @@ export default function BookingForm({
                   <option>5:00 – 7:00 PM</option>
                 </select>
               </div>
+            </div>
+            <div className="fgrid">
               <div className="field">
                 <label>Approx. load</label>
                 <select name="load" defaultValue="">

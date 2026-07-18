@@ -6,6 +6,7 @@ export async function createOrder(formData) {
   const payload = {
     name: formData.get("name")?.toString().trim(),
     phone: formData.get("phone")?.toString().trim(),
+    email: formData.get("email")?.toString().trim() || null,
     address: formData.get("address")?.toString().trim(),
     service: formData.get("service")?.toString(),
     pickup_date: formData.get("date")?.toString(),
